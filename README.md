@@ -172,7 +172,7 @@ https://github.com/napulen/AugmentedNet
 
 # Prior Model Sources
 
-This work builds upon earlier symbolic harmonization research:
+This work is based in earlier symbolic harmonization research:
 
 ## Encoder-Only Transformers for Melodic Harmonization
 
