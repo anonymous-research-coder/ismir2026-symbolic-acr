@@ -150,7 +150,7 @@ Out-of-distribution evaluation uses the **Chord Melody Dataset**.
 
 Public source:
 
-https://github.com/wayne391/ChordMelodyDataset
+https://https://github.com/shiehn/chord-melody-dataset
 
 ---
 
