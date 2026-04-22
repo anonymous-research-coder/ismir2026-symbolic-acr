@@ -1,61 +1,60 @@
-# Synthetic Data and Masked Transformers for Symbolic Automatic Chord Recognition
+# MASKED TRANSFORMER MODELS FOR SYMBOLIC AUTOMATIC CHORD RECOGNITION VIA SYNTHETIC DATA AUGMENTATION (2026)
 
-Official repository for the paper:
+Anonymous repository for the paper:
 
-**Synthetic Data and Masked Transformers for Symbolic Automatic Chord Recognition**
+**MASKED TRANSFORMER MODELS FOR SYMBOLIC AUTOMATIC CHORD RECOGNITION VIA SYNTHETIC DATA AUGMENTATION**
 
-This repository contains the code used to train, evaluate, and reproduce the experiments presented in the paper.
+This repository contains the code, evaluation scripts, and reproduction material associated with the submitted paper.
 
 ---
 
 # Overview
 
-Automatic chord recognition (ACR) aims to estimate time-aligned chord labels from musical input.  
-While most prior work has focused on audio recordings, this work studies **symbolic automatic chord recognition** using MIDI / MusicXML representations.
+Automatic chord recognition (ACR) aims to estimate time-aligned chord labels from musical input.
 
-We propose:
+While most prior work has focused on audio recordings, this paper studies **symbolic automatic chord recognition** using MIDI / MusicXML representations.
 
-- A masked **single-encoder Transformer** for symbolic chord recognition
-- Transfer learning from prior symbolic harmonization models
-- A synthetic multi-source dataset generation pipeline
-- Cross-dataset evaluation on an out-of-distribution benchmark
+The proposed framework combines:
+
+- masked Transformer sequence modeling  
+- symbolic score representations  
+- synthetic dataset generation  
+- cross-dataset evaluation  
 
 ---
 
 # Main Contributions
 
-- Adapts an encoder-only masked Transformer from melodic harmonization to symbolic ACR
-- Uses full symbolic score evidence (melody + accompaniment)
-- Introduces synthetic symbolic training corpus construction
-- Improves performance over recent symbolic baselines
-- Demonstrates improved generalization under out-of-distribution evaluation
+- Adapts masked encoder-only Transformer models to symbolic ACR  
+- Uses note evidence from full symbolic scores (melody + accompaniment)  
+- Introduces synthetic symbolic data augmentation from melody-harmony corpora  
+- Improves generalization under out-of-distribution evaluation  
+- Outperforms recent symbolic baselines on multiple metrics  
 
 ---
 
-# Repository Structure
+# Repository Contents
 
 ## Core Files
 
 ### `train_semh.py`
 
-Training script for the proposed **SESACR** model.
+Training script for the proposed model.
 
-Used for:
+Includes:
 
-- loading tokenized datasets
-- curriculum masking training
-- optimization
-- checkpoint saving
+- dataset loading  
+- curriculum masking  
+- optimization  
+- checkpoint saving  
 
 ---
 
 ### `generate_order_test.py`
 
-Inference / generation script.
+Inference script used to generate chord predictions from trained checkpoints.
 
-Used to run trained models on unseen symbolic files and generate predicted chord outputs.
-
-Supports iterative masked decoding.
+Includes iterative masked decoding strategies.
 
 ---
 
@@ -69,25 +68,25 @@ Main model used in the paper:
 
 Single-encoder Transformer with:
 
-- score input projection
-- chord token embeddings
-- positional encoding
-- masked chord prediction head
+- score projection layers  
+- chord token embeddings  
+- positional encoding  
+- masked token prediction head  
 
 ---
 
 ### `GridMLM_tokenizers_old.py`
 
-Tokenizer and symbolic representation pipeline.
+Tokenizer / symbolic representation pipeline.
 
 Converts MIDI / MusicXML into:
 
-- quarter-note grid
-- pitch-class vectors
-- bar markers
-- chord token sequences
+- quarter-note grids  
+- pitch-class vectors  
+- bar markers  
+- chord token sequences  
 
-Configuration used in paper:
+Main configuration used in the paper:
 
 - `Q4_L80_bar_PC`
 
@@ -95,9 +94,7 @@ Configuration used in paper:
 
 ### `data_utils.py`
 
-Dataset loading utilities.
-
-Includes batching / collate functions.
+Dataset loading and batching utilities.
 
 ---
 
@@ -105,10 +102,10 @@ Includes batching / collate functions.
 
 Training utilities:
 
-- masking schedules
-- losses
-- curriculum helpers
-- metrics logging
+- masking schedules  
+- loss functions  
+- logging  
+- metrics helpers  
 
 ---
 
@@ -116,48 +113,40 @@ Training utilities:
 
 Music processing helpers:
 
-- transposition
-- score conversion
-- symbolic processing utilities
+- transposition  
+- symbolic score handling  
+- utility functions  
 
 ---
 
 ### `p_values.py`
 
-Runs paired statistical significance tests used in paper:
+Statistical significance testing.
 
-- paired t-test
-- Wilcoxon signed-rank test
+Includes:
 
-Outputs `.csv` summaries.
+- paired t-test  
+- Wilcoxon signed-rank test  
+
+Outputs summary `.csv` tables.
 
 ---
 
 # Dataset Sources
 
-## Training Corpora
+## Synthetic Training Sources
 
-Synthetic corpus built from:
+Constructed from publicly available melody-harmony corpora:
 
-### HookTheory
-
-https://www.hooktheory.com/
-
-### Nottingham Dataset
-
-https://ifdo.ca/~seymour/nottingham/nottingham.html
-
-### Wikifonia (archived community mirrors)
-
-Various public mirrors exist.
+- HookTheory  
+- Nottingham Dataset  
+- Wikifonia (archived public sources)
 
 ---
 
 ## Evaluation Benchmark
 
-### Chord Melody Dataset
-
-Used as out-of-distribution evaluation benchmark.
+Out-of-distribution evaluation uses the **Chord Melody Dataset**.
 
 Public source:
 
@@ -169,37 +158,27 @@ https://github.com/wayne391/ChordMelodyDataset
 
 ## BACHI
 
-Repository:
+Public repository:
 
-https://github.com/ptnghia-j/BACHI
-
-Used as symbolic ACR baseline.
-
----
+https://github.com/AndyWeasley2004/BACHI_Chord_Recognition
 
 ## AugmentedNet
 
-Repository:
+Public repository:
 
 https://github.com/napulen/AugmentedNet
 
-Used as symbolic harmonic analysis baseline.
-
 ---
 
-# Original Model Source
+# Prior Model Sources
 
-The proposed model is adapted from prior melodic harmonization work:
+This work builds upon earlier symbolic harmonization research:
 
-### Encoder-Only Transformers for Melodic Harmonization
-
-Paper:
+## Encoder-Only Transformers for Melodic Harmonization
 
 https://proceedings.mlr.press/v303/kaliakatsos-papakostas26a.html
 
-### Diffusion-inspired Masked Language Modeling for Symbolic Harmony Generation
-
-Paper:
+## Diffusion-inspired Masked Language Modeling for Symbolic Harmony Generation
 
 https://www.mdpi.com/2076-3417/15/17/9513
 
@@ -209,3 +188,49 @@ https://www.mdpi.com/2076-3417/15/17/9513
 
 ```bash
 pip install -r requirements.txt
+```
+
+Recommended:
+
+```text
+Python 3.10+
+PyTorch compatible CUDA or CPU setup
+```
+
+---
+
+# Example Training
+
+```bash
+python train_semh.py -m SE -c f2f -f Q4_L80_bar_PC -u 0
+```
+
+---
+
+# Example Inference
+
+```bash
+python generate_order_test.py -m SE -c f2f -f Q4_L80_bar_PC -u 0 --modelpath saved_models/SE/Q4_L80_bar_PC/f2f.pt --input test_data/input --output test_data/output
+```
+
+---
+
+# Statistical Tests
+
+```bash
+python p_values.py
+```
+
+Produces:
+
+- significance summaries  
+- pairwise model comparisons  
+- csv tables for paper reporting  
+
+---
+
+# Notes
+
+This repository is released anonymously for peer-review and reproducibility purposes.
+
+Some external dataset links may change over time. Public mirrors or archived sources may be required.
