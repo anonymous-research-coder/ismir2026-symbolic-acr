@@ -19,17 +19,17 @@ The proposed framework combines:
 - masked Transformer sequence modeling  
 - symbolic score representations  
 - synthetic dataset generation  
-- cross-dataset evaluation  
+- cross-dataset evaluation
 
 ---
 
 # Main Contributions
 
-- Adapts masked encoder-only Transformer models to symbolic ACR  
-- Uses note evidence from full symbolic scores (melody + accompaniment)  
-- Introduces synthetic symbolic data augmentation from melody-harmony corpora  
-- Improves generalization under out-of-distribution evaluation  
-- Outperforms recent symbolic baselines on multiple metrics  
+- Adapts masked encoder-only Transformer models to symbolic ACR
+- Uses note evidence from full symbolic scores (melody + accompaniment)
+- Introduces synthetic symbolic data augmentation from melody-harmony corpora
+- Improves generalization under out-of-distribution evaluation
+- Outperforms recent symbolic baselines on multiple metrics
 
 ---
 
@@ -43,10 +43,10 @@ Training script for the proposed model.
 
 Includes:
 
-- dataset loading  
-- curriculum masking  
-- optimization  
-- checkpoint saving  
+- dataset loading
+- curriculum masking
+- optimization
+- checkpoint saving
 
 ---
 
@@ -68,10 +68,10 @@ Main model used in the paper:
 
 Single-encoder Transformer with:
 
-- score projection layers  
-- chord token embeddings  
-- positional encoding  
-- masked token prediction head  
+- score projection layers
+- chord token embeddings
+- positional encoding
+- masked token prediction head
 
 ---
 
@@ -81,10 +81,10 @@ Tokenizer / symbolic representation pipeline.
 
 Converts MIDI / MusicXML into:
 
-- quarter-note grids  
-- pitch-class vectors  
-- bar markers  
-- chord token sequences  
+- quarter-note grids
+- pitch-class vectors
+- bar markers
+- chord token sequences
 
 Main configuration used in the paper:
 
@@ -102,10 +102,10 @@ Dataset loading and batching utilities.
 
 Training utilities:
 
-- masking schedules  
-- loss functions  
-- logging  
-- metrics helpers  
+- masking schedules
+- loss functions
+- logging
+- metrics helpers
 
 ---
 
@@ -113,9 +113,34 @@ Training utilities:
 
 Music processing helpers:
 
-- transposition  
-- symbolic score handling  
-- utility functions  
+- transposition
+- symbolic score handling
+- utility functions
+
+---
+
+### `compute_scores_from_txts.py`
+
+Main evaluation script used for reported benchmark metrics.
+
+Computes:
+
+- Precision
+- Recall
+- F1 score
+- Exact match rate
+- Edit distance
+- Normalized similarity
+
+Supports folder-based comparisons between prediction outputs and ground-truth chord annotations.
+
+---
+
+### `midi2txt_bottom_staff.py`
+
+Converts symbolic MIDI files into text chord-label sequences using the bottom staff / accompaniment part.
+
+Used to create standardized `.txt` chord references and model outputs for evaluation.
 
 ---
 
@@ -125,8 +150,8 @@ Statistical significance testing.
 
 Includes:
 
-- paired t-test  
-- Wilcoxon signed-rank test  
+- paired t-test
+- Wilcoxon signed-rank test
 
 Outputs summary `.csv` tables.
 
@@ -138,8 +163,8 @@ Outputs summary `.csv` tables.
 
 Constructed from publicly available melody-harmony corpora:
 
-- HookTheory  
-- Nottingham Dataset  
+- HookTheory
+- Nottingham Dataset
 - Wikifonia (archived public sources)
 
 ---
@@ -150,7 +175,7 @@ Out-of-distribution evaluation uses the **Chord Melody Dataset**.
 
 Public source:
 
-https://https://github.com/shiehn/chord-melody-dataset
+https://github.com/shiehn/chord-melody-dataset
 
 ---
 
@@ -215,6 +240,14 @@ python generate_order_test.py -m SE -c f2f -f Q4_L80_bar_PC -u 0 --modelpath sav
 
 ---
 
+# Example Evaluation
+
+```bash
+python compute_scores_from_txts.py
+```
+
+---
+
 # Statistical Tests
 
 ```bash
@@ -223,9 +256,9 @@ python p_values.py
 
 Produces:
 
-- significance summaries  
-- pairwise model comparisons  
-- csv tables for paper reporting  
+- significance summaries
+- pairwise model comparisons
+- csv tables for paper reporting
 
 ---
 
